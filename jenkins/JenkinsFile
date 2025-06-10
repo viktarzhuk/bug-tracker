@@ -51,6 +51,7 @@ pipeline {
                        sh '''
                         npm ci
                         npm test
+                        rm -rf reports/coverage
                         mkdir -p reports
                         mv coverage reports/
                        '''
@@ -71,5 +72,10 @@ pipeline {
                 }
             }
          } 
+    }
+    post {
+        always {
+            cleanWs()
+        }
     }
 }
