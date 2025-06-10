@@ -12,11 +12,26 @@ pipeline {
             steps {
               dir('bugtracker-backend') {
                sh 'go test -v ./... 2>&1 | go-junit-report > test-results.xml'
+
+               # Generate code coverage report
+               sh '''
+                go test -coverprofile=coverage.out -covermode=atomic ./...
+                go tool cover -html=coverage.out -o coverage.html
+                mkdir -p reports
+                mv coverage.html reports/
+               '''
               }
             }
             post {
                 always {
                     junit 'bugtracker-backend/test-results.xml'
+                    publishHTML(target: [
+                        reportName: ' Backend Coverage Report',
+                        reportDir: 'bugtracker-backend/reports',
+                        reportFiles: 'coverage.html',
+                        keepAll: true,
+                        alwaysLinkToLastBuild: true
+                    ])
                 }
             }
         }
