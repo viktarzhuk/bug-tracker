@@ -16,8 +16,10 @@ pipeline {
                        sh '''
                        #Generate the code coverage report
                         go test -v ./... 2>&1 | go-junit-report > test-results.xml
+
                         go test -coverprofile=coverage.out -covermode=atomic ./...
                         go tool cover -html=coverage.out -o coverage.html
+
                         mkdir -p reports
                         mv coverage.html reports/
                        '''
@@ -59,7 +61,7 @@ pipeline {
                             junit 'bugtracker-frontend/test-results.xml'
                             publishHTML(target: [
                                 reportName: 'Frontend Coverage Report',
-                                reportDir: 'bugtracker-frontend/reports',
+                                reportDir: 'bugtracker-frontend/reports/coverage',
                                 reportFiles: 'coverage/index.html',
                                 keepAll: true,
                                 alwaysLinkToLastBuild: true
