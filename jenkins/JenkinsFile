@@ -62,7 +62,7 @@ pipeline {
                             publishHTML(target: [
                                 reportName: 'Frontend Coverage Report',
                                 reportDir: 'bugtracker-frontend/reports/coverage',
-                                reportFiles: 'coverage/index.html',
+                                reportFiles: 'index.html',
                                 keepAll: true,
                                 alwaysLinkToLastBuild: true
                             ])
